@@ -19,12 +19,7 @@ export default function CurrentScreen({
       previousScreen={previousScreen}
       nextScreen={nextScreen}
     />,
-    <Feedback
-      key="feedback"
-      nextScreen={nextScreen}
-      question={question}
-      submitFeedback={() => {}}
-    />,
+    <Feedback key="feedback" nextScreen={nextScreen} question={question} />,
     <Exit key="exit" nextScreen={nextScreen} />,
   ];
   var component = screens[screenIndex];

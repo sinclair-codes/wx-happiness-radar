@@ -1,12 +1,18 @@
 import React from "react";
 import CenterContent from "./ContentGroup";
 import Header from "../Header";
-import Image from "next/image";
+
 export default function Feedback({ question, submitFeedback }) {
   const [currentlySelectedSmileyName, setSelected] = React.useState(null);
   const [isShowingThanks, setIsShowingThanks] = React.useState(false);
   console.log("rerender Feedback");
   console.log("selected", currentlySelectedSmileyName);
+
+  async function submitFeedback(question, response) {
+    const url = `https://docs.google.com/forms/d/e/1FAIpQLSeKBFCPZOkzMRtOudAK-91NzKm8OiAnnlnQDC8zNMJ-oJqSFw/formResponse?&submit=Submit&entry.881971892=${question}&entry.851806253=${response}`;
+    await fetch(url, { mode: "no-cors" });
+  }
+
   function smileyClickHandler(smileyName) {
     if (currentlySelectedSmileyName != null) {
       return; // only submit one smiley at a time
