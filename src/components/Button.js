@@ -43,7 +43,7 @@ export function BackButton({ onClick }) {
       className={`rounded absolute top-0 left-0 ${TEXT_XERO_NAVY} text-xs font-semibold text-center`}
       onClick={onClick}
     >
-      <Image src="/back-arrow.svg" alt="back arrow" width={40} height={40} />
+      <Image src="back-arrow.svg" alt="back arrow" width={40} height={40} />
     </div>
   );
 }
