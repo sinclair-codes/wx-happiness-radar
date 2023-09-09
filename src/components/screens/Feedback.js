@@ -56,7 +56,7 @@ export default function Feedback({ question }) {
             Provide more feedback
           </div>
           <img
-            src="/additional-feedback-qr-code.svg"
+            src="additional-feedback-qr-code.svg"
             className="max-w-[200px] rounded"
           />
         </div>
@@ -69,7 +69,7 @@ function Smiley({ smileyName, onClick, currentlySelectedSmileyName }) {
   return (
     <div>
       <img
-        src={`/smileys/${smileyName}.png`}
+        src={`smileys/${smileyName}.png`}
         alt={smileyName}
         className={`flex-1 ${
           currentlySelectedSmileyName == smileyName
