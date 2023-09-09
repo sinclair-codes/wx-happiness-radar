@@ -2,14 +2,14 @@ import React from "react";
 import CenterContent from "./ContentGroup";
 import Header from "../Header";
 
-export default function Feedback({ question, submitFeedback }) {
+export default function Feedback({ question }) {
   const [currentlySelectedSmileyName, setSelected] = React.useState(null);
   const [isShowingThanks, setIsShowingThanks] = React.useState(false);
   console.log("rerender Feedback");
   console.log("selected", currentlySelectedSmileyName);
 
-  async function submitFeedback(question, response) {
-    const url = `https://docs.google.com/forms/d/e/1FAIpQLSeKBFCPZOkzMRtOudAK-91NzKm8OiAnnlnQDC8zNMJ-oJqSFw/formResponse?&submit=Submit&entry.881971892=${question}&entry.851806253=${response}`;
+  async function submitFeedback(question, smileyName) {
+    const url = `https://docs.google.com/forms/d/e/1FAIpQLSeKBFCPZOkzMRtOudAK-91NzKm8OiAnnlnQDC8zNMJ-oJqSFw/formResponse?&submit=Submit&entry.881971892=${question}&entry.851806253=${smileyName}`;
     await fetch(url, { mode: "no-cors" });
   }
 
@@ -18,7 +18,7 @@ export default function Feedback({ question, submitFeedback }) {
       return; // only submit one smiley at a time
     } else {
       setSelected(smileyName);
-      submitFeedback(smileyName);
+      submitFeedback(question, smileyName);
       setIsShowingThanks(true);
       // short delay
       setTimeout(() => {
@@ -29,13 +29,13 @@ export default function Feedback({ question, submitFeedback }) {
     }
   }
 
-  const smileyNames = ["good", "neutral", "bad"];
-  const smileys = smileyNames.map((smileyName) => (
+  const allSmileyNames = ["good", "neutral", "bad"];
+  const smileys = allSmileyNames.map((smileyName) => (
     <Smiley
       key={smileyName}
       smileyName={smileyName}
       currentlySelectedSmileyName={currentlySelectedSmileyName}
-      onClick={() => smileyClickHandler(smileyName)}
+      onClick={() => smileyClickHandler(smileyName, allSmileyNames)}
     />
   ));
   return (
