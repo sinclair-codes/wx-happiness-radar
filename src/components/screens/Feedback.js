@@ -1,15 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CenterContent from "./ContentGroup";
 import Header from "../Header";
 
 export default function Feedback({ question }) {
-  const [currentlySelectedSmileyName, setSelected] = React.useState(null);
-  const [isShowingThanks, setIsShowingThanks] = React.useState(false);
+  const [currentlySelectedSmileyName, setSelected] = useState(null);
+  const [isShowingThanks, setIsShowingThanks] = useState(false);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+
   console.log("rerender Feedback");
   console.log("selected", currentlySelectedSmileyName);
 
-  async function submitFeedback(question, smileyName) {
-    const url = `https://docs.google.com/forms/d/e/1FAIpQLSeKBFCPZOkzMRtOudAK-91NzKm8OiAnnlnQDC8zNMJ-oJqSFw/formResponse?&submit=Submit&entry.881971892=${question}&entry.851806253=${smileyName}`;
+  useEffect(() => {
+    // Get the user's location when the component mounts
+    const getLocation = async () => {
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+
+        const { latitude, longitude } = position.coords;
+        setLatitude(latitude); // Save latitude to state
+        setLongitude(longitude); // Save longitude to state
+      } catch (error) {
+        console.error("Error getting user location:", error);
+      }
+    };
+
+    getLocation();
+  }, []); // Empty dependency array ensures this effect runs once on mount
+
+  async function submitFeedback(question, smileyName, lat, long) {
+    const url = `https://docs.google.com/forms/d/e/1FAIpQLSeKBFCPZOkzMRtOudAK-91NzKm8OiAnnlnQDC8zNMJ-oJqSFw/formResponse?&submit=Submit&entry.881971892=${question}&entry.851806253=${smileyName}&entry.200176182=${lat}&entry.653180322=${long}`;
     await fetch(url, { mode: "no-cors" });
   }
 
@@ -18,7 +40,7 @@ export default function Feedback({ question }) {
       return; // only submit one smiley at a time
     } else {
       setSelected(smileyName);
-      submitFeedback(question, smileyName);
+      submitFeedback(question, smileyName, latitude, longitude);
       setIsShowingThanks(true);
       // short delay
       setTimeout(() => {
@@ -38,6 +60,7 @@ export default function Feedback({ question }) {
       onClick={() => smileyClickHandler(smileyName, allSmileyNames)}
     />
   ));
+
   return (
     <CenterContent>
       <div />
